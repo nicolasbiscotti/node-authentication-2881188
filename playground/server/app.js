@@ -76,7 +76,7 @@ module.exports = (config) => {
     }
     req.sessionOptions.maxAge =
       req.session.rememberme || req.sessionOptions.maxAge;
-    req.user = user;
+    req.user = user; // deserealization of the user whitin line 72 :)
     res.locals.user = user;
     return next();
   });

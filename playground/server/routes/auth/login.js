@@ -60,7 +60,7 @@ module.exports = () => {
        * @todo: Log the user in by saving the userid to the session and redirect to the index page
        * @todo: Don't forget about 'Remember me'!
        */
-      req.session.userId = user.id;
+      req.session.userId = user.id; // serializatiion of the user
       req.session.messages.push({
         text: 'You are logged in now!!',
         type: 'seccess',
