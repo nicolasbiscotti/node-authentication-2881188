@@ -1,7 +1,11 @@
 const passport = require('passport');
+const passportJWT = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 /* eslint-disable no-unused-vars */
 const UserService = require('../../services/UserService');
+
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 /**
  * This module sets up and configures passport
@@ -40,6 +44,22 @@ module.exports = (config) => {
             });
             return done(null, false);
           }
+          return done(null, user);
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
+  passport.use(
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), // extract the bearer tocken send by the fronend app
+        secretOrKey: config.JWTSECRET,
+      },
+      async (jwtPayload, done) => {
+        try {
+          const user = await UserService.findById(jwtPayload.userId);
           return done(null, user);
         } catch (error) {
           return done(error);
