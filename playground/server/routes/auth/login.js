@@ -36,7 +36,8 @@ module.exports = () => {
         } else {
           req.session.remember = null;
         }
-        return res.redirect('/');
+        return res.redirect(req.session.returnTo || '/'); // res.session.rediretTo is provided for connect-ensure-login
+        // for remember the route the user try to navigate before loggen in
       } catch (err) {
         return next(err);
       }
